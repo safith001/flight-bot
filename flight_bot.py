@@ -94,11 +94,15 @@ def send_telegram_message(message):
         print(f"Error sending Telegram message: {str(e)}")
 
 def check_all_routes():
-    alert_message = "Price Updates:\n\n"
+    check_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Always send: Bot is checking
+    status_message = f"Bot is looking for prices (22 min loop) - {check_time}\n\n"
+    alert_message = ""
     has_alerts = False
     force_send = should_send_6hour_update()
     
-    print("Checking all routes...\n")
+    print(f"[{check_time}] Checking all routes...\n")
     
     for route in ROUTES:
         current_price = get_serpapi_price(route["from"], route["to"], route["name"])
@@ -116,28 +120,38 @@ def check_all_routes():
                 has_alerts = True
                 print(f"{route['name']:<20} RM{current_price} (YELLOW)")
             else:
-                alert_message += f"SILENT {route['name']:<20} RM{current_price}\n"
                 print(f"{route['name']:<20} RM{current_price} (SILENT)")
         
         time.sleep(1)
     
-    # Send if: price dropped OR 6 hours passed
-    if has_alerts or force_send:
-        send_telegram_message(alert_message)
-        if force_send:
-            save_last_check_time()
-    else:
-        print("No alerts to send")
-    
-    return alert_message
+    # Always send status message
+    final_message = status_message
     
     if has_alerts:
-        send_telegram_message(alert_message)
+        # Send price changes
+        final_message += "PRICE CHANGES:\n" + alert_message
     else:
-        print("No alerts to send")
+        # Send no changes message
+        final_message += "No price changes detected"
     
-    return alert_message
+    # Send 6-hour full update if needed
+    if force_send:
+        # Send all routes with full details
+        final_message += "\n\n6-HOUR FULL UPDATE:\n"
+        for route in ROUTES:
+            current_price = get_serpapi_price(route["from"], route["to"], route["name"])
+            if current_price:
+                final_message += f"{route['name']:<20} RM{current_price}\n"
+        save_last_check_time()
+    
+    # Always send message every 22 minutes
+    send_telegram_message(final_message)
+    
+    return final_message
 
 if __name__ == "__main__":
     print("Flight Price Bot - Started\n")
     check_all_routes()
+    
+    
+
