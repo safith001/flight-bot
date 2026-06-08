@@ -94,7 +94,9 @@ def send_telegram_message(message):
         print(f"Error sending Telegram message: {str(e)}")
 
 def check_all_routes():
-    check_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    from datetime import timezone, timedelta
+    myt = timezone(timedelta(hours=8))
+    check_time = datetime.now(myt).strftime("%Y-%m-%d %H:%M:%S")
     
     # Always send: Bot is checking
     status_message = f"Bot is looking for prices (22 min loop) - {check_time}\n\n"
@@ -149,9 +151,11 @@ def check_all_routes():
     
     return final_message
 
+
+    
 if __name__ == "__main__":
     print("Flight Price Bot - Started\n")
-    check_all_routes()
-    
-    
+    while True:
+        check_all_routes()
+        time.sleep(22 * 60)  # 22 minutes
 
