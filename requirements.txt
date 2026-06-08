@@ -1,6 +1,8 @@
+<<<<<<< HEAD
 requests
 beautifulsoup4
 gspread
 python-telegram-bot
 anthropic
 python-dotenv
+=======

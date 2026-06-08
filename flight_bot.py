@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import requests
 from telegram import Bot
 from datetime import datetime, timedelta
@@ -108,4 +109,3 @@ def check_all_routes():
 if __name__ == "__main__":
     print("Flight Price Bot - Started\n")
     check_all_routes()
-    print("\nCheck complete!")
