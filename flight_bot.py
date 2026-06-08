@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import requests
 from telegram import Bot
 from datetime import datetime, timedelta
