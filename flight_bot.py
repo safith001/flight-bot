@@ -1,10 +1,10 @@
-
-import requests
+from serpapi import GoogleSearch
 from telegram import Bot
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
 import time
+import asyncio
 
 load_dotenv()
 
@@ -40,22 +40,39 @@ BUDGETS = {
 }
 
 def get_serpapi_price(from_code, to_code, route_name):
-    mock_prices = {
-        "KL to CMB": 650,
-        "CMB to Chennai": 680,
-        "Dubai to CMB": 690,
-        "Chennai to CMB": 720,
-        "CMB to Dubai": 750,
-    }
-    return mock_prices.get(route_name, 900)
+    try:
+        params = {
+            "api_key": SERPAPI_KEY,
+            "engine": "google_flights",
+            "departure_id": from_code,
+            "arrival_id": to_code,
+            "outbound_date": (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"),
+            "currency": "MYR",
+            "type": "2",
+            "deep_search": "true"
+        }
+        
+        search = GoogleSearch(params)
+        results = search.get_dict()
+        
+        if results.get("best_flights") and len(results["best_flights"]) > 0:
+            price = results["best_flights"][0]["price"]
+            return int(price)
+        
+        return None
+        
+    except Exception as e:
+        print(f"Error fetching {route_name}: {str(e)}")
+        return None
+
 def send_telegram_message(message):
     try:
         bot = Bot(token=TELEGRAM_TOKEN)
-        import asyncio
         asyncio.run(bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message))
         print("Message sent to Telegram")
     except Exception as e:
         print(f"Error sending Telegram message: {str(e)}")
+
 def check_all_routes():
     alert_message = "Price Updates:\n\n"
     has_alerts = False

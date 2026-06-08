@@ -1,6 +1,4 @@
 requests
-beautifulsoup4
-gspread
+google-search-results
 python-telegram-bot
-anthropic
 python-dotenv
