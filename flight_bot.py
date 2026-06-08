@@ -40,31 +40,14 @@ BUDGETS = {
 }
 
 def get_serpapi_price(from_code, to_code, route_name):
-    try:
-        departure_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
-        
-        url = "https://serpapi.com/search"
-        params = {
-            "engine": "google_flights",
-            "departure_id": from_code,
-            "arrival_id": to_code,
-            "outbound_date": departure_date,
-            "currency": "MYR",
-            "api_key": SERPAPI_KEY
-        }
-        
-        response = requests.get(url, params=params, timeout=10)
-        data = response.json()
-        
-        if "best_flights" in data and len(data["best_flights"]) > 0:
-            price = data["best_flights"][0]["price"]
-            return int(price)
-        
-        return None
-        
-    except Exception as e:
-        print(f"Error fetching {route_name}: {str(e)}")
-        return None
+    mock_prices = {
+        "KL to CMB": 650,
+        "CMB to Chennai": 680,
+        "Dubai to CMB": 690,
+        "Chennai to CMB": 720,
+        "CMB to Dubai": 750,
+    }
+    return mock_prices.get(route_name, 900)
 def send_telegram_message(message):
     try:
         bot = Bot(token=TELEGRAM_TOKEN)
