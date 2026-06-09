@@ -65,25 +65,12 @@ def get_serpapi_price(from_code, to_code, route_name):
         print(f"Error fetching {route_name}: {str(e)}")
         return None
 
-def get_last_check_time():
-    """Get the last time we sent a 6-hour update"""
-    try:
-        with open('last_6hour_check.txt', 'r') as f:
-            return datetime.fromisoformat(f.read())
-    except:
-        return None
-
-def save_last_check_time():
-    """Save current time as last 6-hour update"""
-    with open('last_6hour_check.txt', 'w') as f:
-        f.write(datetime.now().isoformat())
-
 def should_send_6hour_update():
-    """Check if 6 hours have passed since last update"""
-    last_check = get_last_check_time()
-    if last_check is None:
-        return True
-    return (datetime.now() - last_check).total_seconds() >= 21600  # 6 hours = 21600 seconds
+    """True only at 00:xx, 06:xx, 12:xx, 18:xx — no file state needed, works in CI"""
+    from datetime import timezone, timedelta
+    myt = timezone(timedelta(hours=8))
+    now = datetime.now(myt)
+    return now.hour % 6 == 0
 
 def send_telegram_message(message):
     try:
@@ -144,8 +131,6 @@ def check_all_routes():
             current_price = get_serpapi_price(route["from"], route["to"], route["name"])
             if current_price:
                 final_message += f"{route['name']:<20} RM{current_price}\n"
-        save_last_check_time()
-    
     # Always send message every 22 minutes
     send_telegram_message(final_message)
     
