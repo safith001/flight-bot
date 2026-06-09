@@ -155,7 +155,5 @@ def check_all_routes():
     
 if __name__ == "__main__":
     print("Flight Price Bot - Started\n")
-    while True:
-        check_all_routes()
-        time.sleep(22 * 60)  # 22 minutes
+    check_all_routes()   # run once, then exit
 
