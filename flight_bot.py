@@ -88,7 +88,7 @@ def should_send_6hour_update():
 def send_telegram_message(message):
     try:
         bot = Bot(token=TELEGRAM_TOKEN)
-        bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message)   # 👈 remove asyncio.run
+        asyncio.run(bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message))
         print("Message sent to Telegram")
     except Exception as e:
         print(f"Error sending Telegram message: {str(e)}")
