@@ -28,12 +28,12 @@ ROUTES = [
 ]
 
 BUDGETS = {
-    "KL to CMB": 700,
-    "CMB to KL": 700,
-    "CMB to Chennai": 700,
-    "Chennai to CMB": 700,
-    "CMB to Dubai": 700,
-    "Dubai to CMB": 700,
+    "KL to CMB": 800,
+    "CMB to KL": 800,
+    "CMB to Chennai": 600,
+    "Chennai to CMB": 600,
+    "CMB to Dubai": 900,
+    "Dubai to CMB": 900,
 }
 
 # Store in repo (will be committed to GitHub)
