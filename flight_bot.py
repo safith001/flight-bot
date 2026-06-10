@@ -4,14 +4,12 @@ from dotenv import load_dotenv
 import os
 import time
 import asyncio
-from anthropic import Anthropic
 
 load_dotenv()
 
 # API Keys
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = int(os.getenv("TELEGRAM_CHAT_ID"))
-CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
 
 # Timezone for Malaysia
 MYT = timezone(timedelta(hours=8))
@@ -34,20 +32,25 @@ BUDGETS = {
     "Dubai to CMB": 700,
 }
 
-# Store daily prices for summaries
-daily_prices = {}
-
 # ============= API FUNCTIONS =============
 
-def get_price_fastflights(from_code, to_code):
-    """Get price using fast-flights (unlimited, free, no API key)"""
+def build_google_flights_url(from_code, to_code, departure_date):
+    """Build Google Flights URL"""
+    date_obj = datetime.strptime(departure_date, "%Y-%m-%d")
+    date_formatted = date_obj.strftime("%m/%d/%Y")
+    return f"https://www.google.com/flights?flt={from_code}{date_formatted}{to_code}&curr=MYR"
+
+def get_flight_details(from_code, to_code, route_name):
+    """Get flight details: price, airline, duration, stops, date"""
     try:
         from fast_flights import FlightData, Passengers, get_flights
+        
+        departure_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
         
         result = get_flights(
             flight_data=[
                 FlightData(
-                    date=(datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"),
+                    date=departure_date,
                     from_airport=from_code,
                     to_airport=to_code
                 )
@@ -58,28 +61,62 @@ def get_price_fastflights(from_code, to_code):
         )
         
         if result and result.flights:
-            first_flight = result.flights[0]
-            price_str = first_flight.price
+            flight = result.flights[0]
             
-            if isinstance(price_str, str) and 'MYR' in price_str:
-                price_num = ''.join(c for c in price_str if c.isdigit())
+            # Extract price
+            price = None
+            if isinstance(flight.price, str) and 'MYR' in flight.price:
+                price_num = ''.join(c for c in flight.price if c.isdigit())
                 if price_num:
-                    return int(price_num)
+                    price = int(price_num)
+            
+            airline = flight.name if flight.name else "Unknown"
+            duration = flight.duration if flight.duration else "Unknown"
+            stops = flight.stops if flight.stops is not None else "Unknown"
+            
+            date_obj = datetime.strptime(departure_date, "%Y-%m-%d")
+            date_display = date_obj.strftime("%d %b %Y")
+            
+            booking_link = build_google_flights_url(from_code, to_code, departure_date)
+            
+            return {
+                "price": price,
+                "airline": airline,
+                "duration": duration,
+                "stops": stops,
+                "date": date_display,
+                "link": booking_link
+            }
         
         return None
         
-    except Exception:
+    except Exception as e:
+        print(f"Error: {str(e)}")
         return None
+
+def format_fare_options(airline, price):
+    """Generate fare tier options based on airline and price"""
+    options = ""
+    
+    if airline.lower() in ["batik air", "malindo air", "flydubai"]:
+        if price and price < 800:
+            value_price = int(price * 1.09)
+            premium_price = int(price * 1.50)
+            options = f"📦 Value: RM{value_price} (20kg checked + 7kg cabin)\n"
+            options += f"📦 Premium: RM{premium_price} (25kg checked + 7kg cabin)"
+    elif airline.lower() in ["indigo"]:
+        if price and price < 700:
+            value_price = int(price * 1.15)
+            premium_price = int(price * 1.70)
+            options = f"📦 Value: RM{value_price} (15kg checked + 6kg cabin)\n"
+            options += f"📦 Premium: RM{premium_price} (25kg checked + 7kg cabin)"
+    
+    return options
 
 def should_send_6hour_update():
     """True only at 00:xx, 06:xx, 12:xx, 18:xx MYT"""
     now = datetime.now(MYT)
     return now.hour % 6 == 0
-
-def should_send_daily_summary():
-    """True at 10 PM (22:00) MYT"""
-    now = datetime.now(MYT)
-    return now.hour == 22
 
 def send_telegram_message(message):
     """Send message via Telegram Bot API"""
@@ -90,104 +127,86 @@ def send_telegram_message(message):
     except Exception as e:
         print(f"[ERROR] Telegram: {str(e)}")
 
-def get_claude_summary(all_prices):
-    """Get AI summary of flight prices using Claude"""
-    try:
-        client = Anthropic()
-        
-        # Format prices for Claude
-        price_text = "\n".join([
-            f"{route}: RM{price}" 
-            for route, price in all_prices.items() 
-            if price is not None
-        ])
-        
-        message = client.messages.create(
-            model="claude-3-5-haiku-20241022",
-            max_tokens=300,
-            messages=[
-                {
-                    "role": "user",
-                    "content": f"""Analyze these flight prices and provide a brief 2-3 sentence summary with the best booking opportunity:
-
-{price_text}
-
-Budget: RM700 per route
-
-Keep it concise and actionable."""
-                }
-            ]
-        )
-        
-        return message.content[0].text
-        
-    except Exception as e:
-        print(f"[ERROR] Claude: {str(e)}")
-        return "Could not generate summary"
-
 def check_all_routes():
     """Check all routes and send alerts"""
-    global daily_prices
-    
     check_time = datetime.now(MYT).strftime("%Y-%m-%d %H:%M:%S")
-    
-    status_message = f"Bot is looking for prices (22 min loop) - {check_time}\n\n"
-    alert_message = ""
-    has_alerts = False
-    force_send = should_send_6hour_update()
-    send_summary = should_send_daily_summary()
     
     print(f"\n[{check_time}] Checking all routes...\n")
     
-    all_prices = {}
+    all_flights = {}
+    alert_sections = []
+    force_send = should_send_6hour_update()
     
-    for route in ROUTES:
-        print(f"  Fetching {route['name']}...", end=" ")
-        current_price = get_price_fastflights(route["from"], route["to"])
-        all_prices[route["name"]] = current_price
-        daily_prices[route["name"]] = current_price
+    for i, route in enumerate(ROUTES, 1):
+        print(f"  {i}. Fetching {route['name']}...", end=" ")
+        flight = get_flight_details(route["from"], route["to"], route["name"])
+        
+        if flight is None:
+            print("No price found")
+            continue
+        
+        all_flights[route["name"]] = flight
+        price = flight["price"]
         budget = BUDGETS[route["name"]]
         
-        if current_price is None:
+        if price is None:
             print("No price found")
         else:
-            if current_price < budget:
-                alert_message += f"RED {route['name']:<20} RM{current_price} BOOK NOW!\n"
-                has_alerts = True
-                print(f"RM{current_price} (RED)")
-            elif current_price < budget * 1.10:
-                alert_message += f"YELLOW {route['name']:<20} RM{current_price} dropped!\n"
-                has_alerts = True
-                print(f"RM{current_price} (YELLOW)")
+            if price < budget:
+                status = "🔴 RED - BOOK NOW!"
+                print(f"RM{price} (RED)")
+            elif price < budget * 1.10:
+                status = "🟡 YELLOW - Price dropped!"
+                print(f"RM{price} (YELLOW)")
             else:
-                print(f"RM{current_price} (SILENT)")
+                status = "⚫ SILENT"
+                print(f"RM{price} (SILENT)")
+            
+            # Build detailed section for this route
+            if price < budget * 1.10:  # Show details only for RED/YELLOW
+                section = f"\n{i}. {route['name'].upper()}\n"
+                section += f"{'─' * 50}\n"
+                section += f"Status: {status}\n"
+                section += f"Price: RM{price} (No checked baggage, 7kg cabin)\n"
+                section += f"Date: {flight['date']}\n"
+                section += f"Airline: {flight['airline']}\n"
+                section += f"Duration: {flight['duration']}\n"
+                section += f"Stops: {flight['stops']}\n\n"
+                
+                fare_options = format_fare_options(flight['airline'], price)
+                if fare_options:
+                    section += f"Other Fare Options:\n{fare_options}\n\n"
+                
+                section += f"Book Now: {flight['link']}\n"
+                alert_sections.append(section)
         
         time.sleep(0.5)
     
     # Build final message
-    final_message = status_message
+    final_message = f"✈️ FLIGHT PRICE ALERT\n"
+    final_message += f"Check Time: {check_time}\n"
+    final_message += f"{'═' * 50}\n"
     
-    if has_alerts:
-        final_message += "PRICE CHANGES:\n" + alert_message
+    if alert_sections:
+        final_message += "\n".join(alert_sections)
     else:
-        final_message += "No price changes detected"
+        final_message += "No price changes detected - all flights above budget.\n"
     
-    # 6-hour full update
+    # Add 6-hour full update
     if force_send:
-        final_message += "\n\n6-HOUR FULL UPDATE:\n"
-        for route_name, price in all_prices.items():
-            if price:
-                final_message += f"{route_name:<20} RM{price}\n"
-    
-    # Daily summary at 10 PM
-    if send_summary:
-        print("\n[SUMMARY] Generating Claude AI summary...")
-        summary = get_claude_summary(all_prices)
-        final_message += f"\n\nDAILY SUMMARY (Claude AI):\n{summary}"
+        final_message += f"\n{'═' * 50}\n"
+        final_message += "📊 6-HOUR FULL UPDATE\n"
+        final_message += f"{'─' * 50}\n\n"
+        
+        for i, (route_name, flight) in enumerate(all_flights.items(), 1):
+            final_message += f"{i}. {route_name}\n"
+            final_message += f"   Price: RM{flight['price']} | Date: {flight['date']}\n"
+            final_message += f"   {flight['airline']} | {flight['duration']} | {flight['stops']} stops\n"
+            final_message += f"   {flight['link']}\n\n"
     
     send_telegram_message(final_message)
     return final_message
 
 if __name__ == "__main__":
-    print("Flight Price Bot - Started (fast-flights + Claude AI)\n")
+    print("Flight Price Bot - Started (Clean Format)\n")
     check_all_routes()
