@@ -1,4 +1,4 @@
 fast-flights
 python-telegram-bot
 python-dotenv
-
+anthropic
