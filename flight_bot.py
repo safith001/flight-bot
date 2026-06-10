@@ -4,12 +4,14 @@ from dotenv import load_dotenv
 import os
 import time
 import asyncio
+from anthropic import Anthropic
 
 load_dotenv()
 
 # API Keys
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = int(os.getenv("TELEGRAM_CHAT_ID"))
+CLAUDE_API_KEY = os.getenv("CLAUDE_API_KEY")
 
 # Timezone for Malaysia
 MYT = timezone(timedelta(hours=8))
@@ -32,6 +34,9 @@ BUDGETS = {
     "Dubai to CMB": 700,
 }
 
+# Store daily prices for summaries
+daily_prices = {}
+
 # ============= API FUNCTIONS =============
 
 def get_price_fastflights(from_code, to_code):
@@ -53,26 +58,28 @@ def get_price_fastflights(from_code, to_code):
         )
         
         if result and result.flights:
-            # Get the first (cheapest) flight's price
             first_flight = result.flights[0]
             price_str = first_flight.price
             
-            # Parse price string like "MYR 699" or "MYR\xa0699"
             if isinstance(price_str, str) and 'MYR' in price_str:
-                # Extract just the number
                 price_num = ''.join(c for c in price_str if c.isdigit())
                 if price_num:
                     return int(price_num)
         
         return None
         
-    except Exception as e:
+    except Exception:
         return None
 
 def should_send_6hour_update():
     """True only at 00:xx, 06:xx, 12:xx, 18:xx MYT"""
     now = datetime.now(MYT)
     return now.hour % 6 == 0
+
+def should_send_daily_summary():
+    """True at 10 PM (22:00) MYT"""
+    now = datetime.now(MYT)
+    return now.hour == 22
 
 def send_telegram_message(message):
     """Send message via Telegram Bot API"""
@@ -83,24 +90,62 @@ def send_telegram_message(message):
     except Exception as e:
         print(f"[ERROR] Telegram: {str(e)}")
 
+def get_claude_summary(all_prices):
+    """Get AI summary of flight prices using Claude"""
+    try:
+        client = Anthropic()
+        
+        # Format prices for Claude
+        price_text = "\n".join([
+            f"{route}: RM{price}" 
+            for route, price in all_prices.items() 
+            if price is not None
+        ])
+        
+        message = client.messages.create(
+            model="claude-3-5-haiku-20241022",
+            max_tokens=300,
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"""Analyze these flight prices and provide a brief 2-3 sentence summary with the best booking opportunity:
+
+{price_text}
+
+Budget: RM700 per route
+
+Keep it concise and actionable."""
+                }
+            ]
+        )
+        
+        return message.content[0].text
+        
+    except Exception as e:
+        print(f"[ERROR] Claude: {str(e)}")
+        return "Could not generate summary"
+
 def check_all_routes():
     """Check all routes and send alerts"""
+    global daily_prices
+    
     check_time = datetime.now(MYT).strftime("%Y-%m-%d %H:%M:%S")
     
     status_message = f"Bot is looking for prices (22 min loop) - {check_time}\n\n"
     alert_message = ""
     has_alerts = False
     force_send = should_send_6hour_update()
+    send_summary = should_send_daily_summary()
     
     print(f"\n[{check_time}] Checking all routes...\n")
     
-    # Store prices for 6-hour update reuse
     all_prices = {}
     
     for route in ROUTES:
         print(f"  Fetching {route['name']}...", end=" ")
         current_price = get_price_fastflights(route["from"], route["to"])
         all_prices[route["name"]] = current_price
+        daily_prices[route["name"]] = current_price
         budget = BUDGETS[route["name"]]
         
         if current_price is None:
@@ -127,16 +172,22 @@ def check_all_routes():
     else:
         final_message += "No price changes detected"
     
-    # 6-hour full update (reuse stored prices, don't refetch)
+    # 6-hour full update
     if force_send:
         final_message += "\n\n6-HOUR FULL UPDATE:\n"
         for route_name, price in all_prices.items():
             if price:
                 final_message += f"{route_name:<20} RM{price}\n"
     
+    # Daily summary at 10 PM
+    if send_summary:
+        print("\n[SUMMARY] Generating Claude AI summary...")
+        summary = get_claude_summary(all_prices)
+        final_message += f"\n\nDAILY SUMMARY (Claude AI):\n{summary}"
+    
     send_telegram_message(final_message)
     return final_message
 
 if __name__ == "__main__":
-    print("Flight Price Bot - Started (fast-flights only)\n")
+    print("Flight Price Bot - Started (fast-flights + Claude AI)\n")
     check_all_routes()
