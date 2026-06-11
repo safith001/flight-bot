@@ -235,6 +235,10 @@
         {
           "time": "17:19",
           "price": 870
+        },
+        {
+          "time": "21:50",
+          "price": 870
         }
       ],
       "airline": "SriLankan",
@@ -245,6 +249,10 @@
         {
           "time": "17:19",
           "price": 819
+        },
+        {
+          "time": "21:50",
+          "price": 858
         }
       ],
       "airline": "Unknown",
@@ -254,6 +262,10 @@
       "prices": [
         {
           "time": "17:19",
+          "price": 571
+        },
+        {
+          "time": "21:50",
           "price": 571
         }
       ],
@@ -265,6 +277,10 @@
         {
           "time": "17:19",
           "price": 481
+        },
+        {
+          "time": "21:50",
+          "price": 480
         }
       ],
       "airline": "Unknown",
@@ -275,6 +291,10 @@
         {
           "time": "17:19",
           "price": 785
+        },
+        {
+          "time": "21:50",
+          "price": 784
         }
       ],
       "airline": "Unknown",
@@ -285,6 +305,10 @@
         {
           "time": "17:19",
           "price": 725
+        },
+        {
+          "time": "21:50",
+          "price": 680
         }
       ],
       "airline": "Unknown",
