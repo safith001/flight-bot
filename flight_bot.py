@@ -51,25 +51,24 @@ def extract_price(price_str):
     if price_str is None:
         return None
     
-    # Convert to string if needed
     price_str = str(price_str)
     
-    # Remove currency symbols and extract numbers
     import re
     numbers = re.findall(r'\d+', price_str)
     
     if numbers:
-        # Take the last number (usually the actual price)
         return int(numbers[-1])
     
     return None
 
 def get_flight_details(from_code, to_code, route_name):
-    """Get flight details: price, airline, duration, stops, date"""
+    """Get flight details with detailed debug output"""
     try:
         from fast_flights import FlightData, Passengers, get_flights
         
         departure_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+        
+        print(f"    [DEBUG] Calling fast_flights for {route_name}...")
         
         result = get_flights(
             flight_data=[
@@ -84,10 +83,13 @@ def get_flight_details(from_code, to_code, route_name):
             passengers=Passengers(adults=1)
         )
         
+        print(f"    [DEBUG] Result type: {type(result)}")
+        
         if result and result.flights:
+            print(f"    [DEBUG] Found {len(result.flights)} flights")
             flight = result.flights[0]
             
-            # Extract price using robust method
+            print(f"    [DEBUG] Flight 0 price: {flight.price}")
             price = extract_price(flight.price)
             
             airline = flight.name if flight.name else "Unknown"
@@ -107,11 +109,15 @@ def get_flight_details(from_code, to_code, route_name):
                 "date": date_display,
                 "link": booking_link
             }
+        else:
+            print(f"    [DEBUG] No flights returned for {route_name}!")
         
         return None
         
     except Exception as e:
-        print(f"Error fetching {route_name}: {str(e)}")
+        print(f"    [ERROR] {route_name}: {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return None
 
 def format_fare_options(airline, price):
