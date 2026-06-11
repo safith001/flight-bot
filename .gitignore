@@ -1,5 +1,14 @@
-.env
+# Secrets
 credentials.json
+.env
+.env.local
+*.key
+*.pem
+
+# Temp files
 __pycache__/
 *.pyc
-"credentials.json" 
+.DS_Store
+
+# Logs
+*.log
