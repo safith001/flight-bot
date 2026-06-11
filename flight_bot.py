@@ -62,13 +62,11 @@ def extract_price(price_str):
     return None
 
 def get_flight_details(from_code, to_code, route_name):
-    """Get flight details with detailed debug output"""
+    """Get flight details"""
     try:
         from fast_flights import FlightData, Passengers, get_flights
         
         departure_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
-        
-        print(f"    [DEBUG] Calling fast_flights for {route_name}...")
         
         result = get_flights(
             flight_data=[
@@ -83,13 +81,8 @@ def get_flight_details(from_code, to_code, route_name):
             passengers=Passengers(adults=1)
         )
         
-        print(f"    [DEBUG] Result type: {type(result)}")
-        
         if result and result.flights:
-            print(f"    [DEBUG] Found {len(result.flights)} flights")
             flight = result.flights[0]
-            
-            print(f"    [DEBUG] Flight 0 price: {flight.price}")
             price = extract_price(flight.price)
             
             airline = flight.name if flight.name else "Unknown"
@@ -109,19 +102,15 @@ def get_flight_details(from_code, to_code, route_name):
                 "date": date_display,
                 "link": booking_link
             }
-        else:
-            print(f"    [DEBUG] No flights returned for {route_name}!")
         
         return None
         
     except Exception as e:
-        print(f"    [ERROR] {route_name}: {type(e).__name__}: {str(e)}")
-        import traceback
-        traceback.print_exc()
+        print(f"Error {route_name}: {str(e)}")
         return None
 
 def format_fare_options(airline, price):
-    """Generate fare tier options based on airline and price"""
+    """Generate fare tier options"""
     if not price:
         return ""
     
@@ -143,7 +132,7 @@ def format_fare_options(airline, price):
     return options
 
 def save_daily_prices(all_flights):
-    """Save today's prices to GitHub history file"""
+    """Save today's prices"""
     today = datetime.now(MYT).strftime("%Y-%m-%d")
     
     try:
@@ -173,21 +162,18 @@ def save_daily_prices(all_flights):
         
         with open(HISTORY_FILE, 'w') as f:
             json.dump(history, f, indent=2)
-        
-        print(f"[HISTORY] Saved prices")
     
     except Exception as e:
-        print(f"[ERROR] History save: {str(e)}")
+        print(f"Error saving history: {str(e)}")
 
 def commit_history_to_github():
-    """Commit updated history to GitHub"""
+    """Commit price history"""
     try:
         subprocess.run(['git', 'add', HISTORY_FILE], check=False, timeout=5)
         subprocess.run(['git', 'commit', '-m', f'Update price history - {datetime.now(MYT).strftime("%Y-%m-%d %H:%M")}'], check=False, timeout=5)
         subprocess.run(['git', 'push'], check=False, timeout=10)
-        print("[GIT] History committed")
     except Exception as e:
-        print(f"[ERROR] Git: {str(e)}")
+        print(f"Git error: {str(e)}")
 
 def get_today_price_history():
     """Get all prices collected today"""
@@ -201,20 +187,18 @@ def get_today_price_history():
             if today in history:
                 return history[today]
     except Exception as e:
-        print(f"[ERROR] History load: {str(e)}")
+        print(f"Error loading history: {str(e)}")
     
     return {}
 
 def get_claude_daily_summary(price_history):
-    """Use Claude to analyze full day's price history"""
+    """Use Claude to analyze prices"""
     try:
         if not CLAUDE_API_KEY:
-            print("[CLAUDE] API key missing")
-            return None
+            return "❌ Claude API key not configured"
         
         if not price_history:
-            print("[CLAUDE] No price history")
-            return None
+            return "❌ No price history available"
         
         client = Anthropic(api_key=CLAUDE_API_KEY)
         
@@ -229,7 +213,7 @@ def get_claude_daily_summary(price_history):
                 trend = "📈 UP" if latest_price > first_price else "📉 DOWN"
                 change = abs(latest_price - first_price)
                 
-                history_text += f"\n{route}: RM{first_price}→RM{latest_price} ({change}RM change) {trend}"
+                history_text += f"\n{route}: RM{first_price}→RM{latest_price} ({change}RM) {trend} | Low: RM{min_price} High: RM{max_price}"
         
         message = client.messages.create(
             model="claude-3-5-sonnet-20241022",
@@ -237,13 +221,13 @@ def get_claude_daily_summary(price_history):
             messages=[
                 {
                     "role": "user",
-                    "content": f"""Analyze today's flight prices and give a 3-4 sentence smart summary:
+                    "content": f"""Analyze today's complete flight price history and give a smart 3-4 sentence summary:
 
 {history_text}
 
 Budget: RM700 per route
 
-Tell: best deals, trends, booking advice."""
+Include: best deals, price trends, booking recommendations."""
                 }
             ]
         )
@@ -251,11 +235,10 @@ Tell: best deals, trends, booking advice."""
         return message.content[0].text
         
     except Exception as e:
-        print(f"[ERROR] Claude: {str(e)}")
-        return None
+        return f"❌ Claude error: {str(e)}"
 
 def should_send_2hour_update():
-    """True only at exact even hours (00-04 minutes)"""
+    """True at even hours (00-04 minutes)"""
     now = datetime.now(MYT)
     return now.hour % 2 == 0 and now.minute < 5
 
@@ -265,19 +248,16 @@ def should_send_daily_summary():
     return now.hour == 22 and now.minute < 5
 
 def send_telegram_message(message):
-    """Send message via Telegram Bot API"""
+    """Send message via Telegram"""
     try:
         bot = Bot(token=TELEGRAM_TOKEN)
         asyncio.run(bot.send_message(chat_id=TELEGRAM_CHAT_ID, text=message))
-        print("[OK] Message sent")
     except Exception as e:
-        print(f"[ERROR] Telegram: {str(e)}")
+        print(f"Telegram error: {str(e)}")
 
 def check_all_routes():
-    """Check all routes and send alerts"""
+    """Main function"""
     check_time = datetime.now(MYT).strftime("%Y-%m-%d %H:%M:%S")
-    
-    print(f"\n[{check_time}] Checking routes...\n")
     
     all_flights = {}
     alert_sections = []
@@ -285,29 +265,22 @@ def check_all_routes():
     send_summary = should_send_daily_summary()
     
     for i, route in enumerate(ROUTES, 1):
-        print(f"  {i}. {route['name']}...", end=" ")
         flight = get_flight_details(route["from"], route["to"], route["name"])
         
         if flight is None:
-            print("No data")
             continue
         
         all_flights[route["name"]] = flight
         price = flight["price"]
         budget = BUDGETS[route["name"]]
         
-        if price is None:
-            print("No price")
-        else:
+        if price is not None:
             if price < budget:
                 status = "🔴 RED"
-                print(f"RM{price} (RED)")
             elif price < budget * 1.10:
                 status = "🟡 YELLOW"
-                print(f"RM{price} (YELLOW)")
             else:
                 status = "⚫ SILENT"
-                print(f"RM{price}")
             
             if price < budget * 1.10:
                 section = f"\n{i}. {route['name'].upper()}\n"
@@ -353,19 +326,21 @@ def check_all_routes():
                 final_message += f"   {flight['link']}\n\n"
     
     if send_summary:
-        print("\n[CLAUDE] Generating summary...\n")
+        final_message += f"\n{'═' * 40}\n"
+        final_message += "🤖 CLAUDE AI DAILY SUMMARY (10 PM)\n"
+        final_message += f"{'─' * 40}\n"
+        
         price_history = get_today_price_history()
+        
         if price_history:
             summary = get_claude_daily_summary(price_history)
-            if summary:
-                final_message += f"\n{'═' * 40}\n"
-                final_message += "🤖 CLAUDE AI SUMMARY (10 PM)\n"
-                final_message += f"{'─' * 40}\n"
-                final_message += summary
+            final_message += summary
+        else:
+            final_message += "❌ No price history collected today\n"
+            final_message += "\nRoutes checked: " + ", ".join([r['name'] for r in ROUTES]) + "\n"
+            final_message += f"Prices extracted: {len([f for f in all_flights.values() if f['price'] is not None])}/{len(ROUTES)}"
     
     send_telegram_message(final_message)
-    return final_message
 
 if __name__ == "__main__":
-    print("Flight Bot v3 - Started\n")
     check_all_routes()
