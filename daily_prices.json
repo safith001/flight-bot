@@ -228,5 +228,67 @@
       "airline": "Unknown",
       "duration": "Unknown"
     }
+  },
+  "2026-06-11": {
+    "KL to CMB": {
+      "prices": [
+        {
+          "time": "17:19",
+          "price": 870
+        }
+      ],
+      "airline": "SriLankan",
+      "duration": "3 hr 30 min"
+    },
+    "CMB to KL": {
+      "prices": [
+        {
+          "time": "17:19",
+          "price": 819
+        }
+      ],
+      "airline": "Unknown",
+      "duration": "Unknown"
+    },
+    "CMB to Chennai": {
+      "prices": [
+        {
+          "time": "17:19",
+          "price": 571
+        }
+      ],
+      "airline": "IndiGo",
+      "duration": "1 hr 20 min"
+    },
+    "Chennai to CMB": {
+      "prices": [
+        {
+          "time": "17:19",
+          "price": 481
+        }
+      ],
+      "airline": "Unknown",
+      "duration": "Unknown"
+    },
+    "CMB to Dubai": {
+      "prices": [
+        {
+          "time": "17:19",
+          "price": 785
+        }
+      ],
+      "airline": "Unknown",
+      "duration": "Unknown"
+    },
+    "Dubai to CMB": {
+      "prices": [
+        {
+          "time": "17:19",
+          "price": 725
+        }
+      ],
+      "airline": "Unknown",
+      "duration": "Unknown"
+    }
   }
 }
