@@ -689,14 +689,6 @@ Your support helps:
 - Build new features
 - Scale to more airlines
 
----
-
-## 📄 Additional Resources
-
-- [Setup Guide](docs/SETUP.md) - Detailed installation
-- [Architecture](docs/ARCHITECTURE.md) - Technical design
-- [Troubleshooting](docs/TROUBLESHOOTING.md) - Common issues
-- [Business Plan](COMPLETE_BUSINESS_PLAN_YEAR1_ROI.md) - Full strategy
 
 ---
 
