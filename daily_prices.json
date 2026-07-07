@@ -520,5 +520,67 @@
       "airline": "FitsAir",
       "duration": "4h 30m"
     }
+  },
+  "2026-07-08": {
+    "KL to CMB": {
+      "prices": [
+        {
+          "time": "02:09",
+          "price": 569
+        }
+      ],
+      "airline": "Batik Air",
+      "duration": "3h 30m"
+    },
+    "CMB to KL": {
+      "prices": [
+        {
+          "time": "02:09",
+          "price": 616
+        }
+      ],
+      "airline": "Batik Air",
+      "duration": "3h 50m"
+    },
+    "CMB to Chennai": {
+      "prices": [
+        {
+          "time": "02:09",
+          "price": 576
+        }
+      ],
+      "airline": "IndiGo",
+      "duration": "1h 20m"
+    },
+    "Chennai to CMB": {
+      "prices": [
+        {
+          "time": "02:09",
+          "price": 652
+        }
+      ],
+      "airline": "SriLankan",
+      "duration": "1h 25m"
+    },
+    "CMB to Dubai": {
+      "prices": [
+        {
+          "time": "02:09",
+          "price": 681
+        }
+      ],
+      "airline": "FitsAir",
+      "duration": "4h 50m"
+    },
+    "Dubai to CMB": {
+      "prices": [
+        {
+          "time": "02:09",
+          "price": 2177
+        }
+      ],
+      "airline": "FitsAir",
+      "duration": "4h 30m"
+    }
   }
 }
