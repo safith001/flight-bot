@@ -822,5 +822,67 @@
       "airline": "FitsAir",
       "duration": "4h 30m"
     }
+  },
+  "2026-07-09": {
+    "KL to CMB": {
+      "prices": [
+        {
+          "time": "01:07",
+          "price": 1143
+        }
+      ],
+      "airline": "AirAsia",
+      "duration": "3h 30m"
+    },
+    "CMB to KL": {
+      "prices": [
+        {
+          "time": "01:07",
+          "price": 993
+        }
+      ],
+      "airline": "AirAsia",
+      "duration": "3h 40m"
+    },
+    "CMB to Chennai": {
+      "prices": [
+        {
+          "time": "01:07",
+          "price": 554
+        }
+      ],
+      "airline": "IndiGo",
+      "duration": "1h 20m"
+    },
+    "Chennai to CMB": {
+      "prices": [
+        {
+          "time": "01:07",
+          "price": 609
+        }
+      ],
+      "airline": "IndiGo",
+      "duration": "1h 30m"
+    },
+    "CMB to Dubai": {
+      "prices": [
+        {
+          "time": "01:07",
+          "price": 681
+        }
+      ],
+      "airline": "FitsAir",
+      "duration": "4h 50m"
+    },
+    "Dubai to CMB": {
+      "prices": [
+        {
+          "time": "01:07",
+          "price": 2012
+        }
+      ],
+      "airline": "FitsAir",
+      "duration": "4h 30m"
+    }
   }
 }
