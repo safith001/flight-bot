@@ -833,6 +833,10 @@
         {
           "time": "02:51",
           "price": 1143
+        },
+        {
+          "time": "04:19",
+          "price": 1028
         }
       ],
       "airline": "AirAsia",
@@ -847,6 +851,10 @@
         {
           "time": "02:51",
           "price": 993
+        },
+        {
+          "time": "04:19",
+          "price": 868
         }
       ],
       "airline": "AirAsia",
@@ -860,6 +868,10 @@
         },
         {
           "time": "02:51",
+          "price": 554
+        },
+        {
+          "time": "04:19",
           "price": 554
         }
       ],
@@ -875,6 +887,10 @@
         {
           "time": "02:51",
           "price": 610
+        },
+        {
+          "time": "04:19",
+          "price": 609
         }
       ],
       "airline": "IndiGo",
@@ -889,6 +905,10 @@
         {
           "time": "02:51",
           "price": 681
+        },
+        {
+          "time": "04:19",
+          "price": 680
         }
       ],
       "airline": "FitsAir",
@@ -903,6 +923,10 @@
         {
           "time": "02:51",
           "price": 2126
+        },
+        {
+          "time": "04:19",
+          "price": 2176
         }
       ],
       "airline": "FitsAir",
