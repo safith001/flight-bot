@@ -1123,6 +1123,10 @@
         {
           "time": "07:10",
           "price": 569
+        },
+        {
+          "time": "09:02",
+          "price": 569
         }
       ],
       "airline": "Batik Air",
@@ -1149,6 +1153,10 @@
         {
           "time": "07:10",
           "price": 503
+        },
+        {
+          "time": "09:02",
+          "price": 502
         }
       ],
       "airline": "Batik Air",
@@ -1175,6 +1183,10 @@
         {
           "time": "07:10",
           "price": 598
+        },
+        {
+          "time": "09:02",
+          "price": 575
         }
       ],
       "airline": "IndiGo",
@@ -1201,6 +1213,10 @@
         {
           "time": "07:10",
           "price": 649
+        },
+        {
+          "time": "09:02",
+          "price": 609
         }
       ],
       "airline": "SriLankan",
@@ -1227,6 +1243,10 @@
         {
           "time": "07:10",
           "price": 680
+        },
+        {
+          "time": "09:02",
+          "price": 761
         }
       ],
       "airline": "FitsAir",
@@ -1253,6 +1273,10 @@
         {
           "time": "07:10",
           "price": 1661
+        },
+        {
+          "time": "09:02",
+          "price": 1981
         }
       ],
       "airline": "FitsAir",
