@@ -1585,6 +1585,10 @@
         {
           "time": "11:21",
           "price": 966
+        },
+        {
+          "time": "13:09",
+          "price": 966
         }
       ],
       "airline": "Air India",
@@ -1595,6 +1599,10 @@
         {
           "time": "11:21",
           "price": 1152
+        },
+        {
+          "time": "13:09",
+          "price": 1151
         }
       ],
       "airline": "Batik Air",
@@ -1605,6 +1613,10 @@
         {
           "time": "11:21",
           "price": 900
+        },
+        {
+          "time": "13:09",
+          "price": 859
         }
       ],
       "airline": "IndiGo",
@@ -1615,6 +1627,10 @@
         {
           "time": "11:21",
           "price": 651
+        },
+        {
+          "time": "13:09",
+          "price": 718
         }
       ],
       "airline": "SriLankan",
@@ -1625,6 +1641,10 @@
         {
           "time": "11:21",
           "price": 1104
+        },
+        {
+          "time": "13:09",
+          "price": 1147
         }
       ],
       "airline": "flydubai",
@@ -1634,6 +1654,10 @@
       "prices": [
         {
           "time": "11:21",
+          "price": 1081
+        },
+        {
+          "time": "13:09",
           "price": 1081
         }
       ],
