@@ -1579,5 +1579,66 @@
   "2026-08-04": {},
   "2026-08-05": {},
   "2026-08-06": {},
-  "2026-08-07": {}
+  "2026-08-07": {
+    "KL to CMB": {
+      "prices": [
+        {
+          "time": "11:21",
+          "price": 966
+        }
+      ],
+      "airline": "Air India",
+      "duration": "11h 45m"
+    },
+    "CMB to KL": {
+      "prices": [
+        {
+          "time": "11:21",
+          "price": 1152
+        }
+      ],
+      "airline": "Batik Air",
+      "duration": "3h 50m"
+    },
+    "CMB to Chennai": {
+      "prices": [
+        {
+          "time": "11:21",
+          "price": 900
+        }
+      ],
+      "airline": "IndiGo",
+      "duration": "1h 15m"
+    },
+    "Chennai to CMB": {
+      "prices": [
+        {
+          "time": "11:21",
+          "price": 651
+        }
+      ],
+      "airline": "SriLankan",
+      "duration": "1h 25m"
+    },
+    "CMB to Dubai": {
+      "prices": [
+        {
+          "time": "11:21",
+          "price": 1104
+        }
+      ],
+      "airline": "flydubai",
+      "duration": "7h 0m"
+    },
+    "Dubai to CMB": {
+      "prices": [
+        {
+          "time": "11:21",
+          "price": 1081
+        }
+      ],
+      "airline": "flydubai",
+      "duration": "4h 55m"
+    }
+  }
 }
