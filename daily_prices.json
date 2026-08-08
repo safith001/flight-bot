@@ -2525,6 +2525,10 @@
         {
           "time": "00:02",
           "price": 1239
+        },
+        {
+          "time": "00:57",
+          "price": 1239
         }
       ],
       "airline": "Malaysia Airlines",
@@ -2535,6 +2539,10 @@
         {
           "time": "00:02",
           "price": 1665
+        },
+        {
+          "time": "00:57",
+          "price": 1225
         }
       ],
       "airline": "AirAsia",
@@ -2544,6 +2552,10 @@
       "prices": [
         {
           "time": "00:02",
+          "price": 925
+        },
+        {
+          "time": "00:57",
           "price": 925
         }
       ],
@@ -2555,6 +2567,10 @@
         {
           "time": "00:02",
           "price": 652
+        },
+        {
+          "time": "00:57",
+          "price": 652
         }
       ],
       "airline": "SriLankan",
@@ -2565,6 +2581,10 @@
         {
           "time": "00:02",
           "price": 1207
+        },
+        {
+          "time": "00:57",
+          "price": 1207
         }
       ],
       "airline": "FitsAir",
@@ -2574,6 +2594,10 @@
       "prices": [
         {
           "time": "00:02",
+          "price": 978
+        },
+        {
+          "time": "00:57",
           "price": 978
         }
       ],
