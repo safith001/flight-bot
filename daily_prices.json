@@ -3532,6 +3532,10 @@
         {
           "time": "12:54",
           "price": 731
+        },
+        {
+          "time": "17:57",
+          "price": 731
         }
       ],
       "airline": "SriLankan",
@@ -3542,6 +3546,10 @@
         {
           "time": "12:54",
           "price": 843
+        },
+        {
+          "time": "17:57",
+          "price": 773
         }
       ],
       "airline": "AirAsia",
@@ -3552,6 +3560,10 @@
         {
           "time": "12:54",
           "price": 525
+        },
+        {
+          "time": "17:57",
+          "price": 499
         }
       ],
       "airline": "IndiGo",
@@ -3562,6 +3574,10 @@
         {
           "time": "12:54",
           "price": 484
+        },
+        {
+          "time": "17:57",
+          "price": 532
         }
       ],
       "airline": "IndiGo",
@@ -3572,6 +3588,10 @@
         {
           "time": "12:54",
           "price": 1616
+        },
+        {
+          "time": "17:57",
+          "price": 1485
         }
       ],
       "airline": "SriLankan",
@@ -3581,6 +3601,10 @@
       "prices": [
         {
           "time": "12:54",
+          "price": 721
+        },
+        {
+          "time": "17:57",
           "price": 721
         }
       ],
