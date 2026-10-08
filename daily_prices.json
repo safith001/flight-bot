@@ -5045,6 +5045,10 @@
         {
           "time": "03:29",
           "price": 866
+        },
+        {
+          "time": "07:57",
+          "price": 425
         }
       ],
       "airline": "SriLankan",
@@ -5054,6 +5058,10 @@
       "prices": [
         {
           "time": "03:29",
+          "price": 836
+        },
+        {
+          "time": "07:57",
           "price": 836
         }
       ],
@@ -5065,6 +5073,10 @@
         {
           "time": "03:29",
           "price": 623
+        },
+        {
+          "time": "07:57",
+          "price": 623
         }
       ],
       "airline": "SriLankan",
@@ -5074,6 +5086,10 @@
       "prices": [
         {
           "time": "03:29",
+          "price": 679
+        },
+        {
+          "time": "07:57",
           "price": 679
         }
       ],
@@ -5085,6 +5101,10 @@
         {
           "time": "03:29",
           "price": 679
+        },
+        {
+          "time": "07:57",
+          "price": 679
         }
       ],
       "airline": "SriLankan",
@@ -5095,6 +5115,10 @@
         {
           "time": "03:29",
           "price": 1109
+        },
+        {
+          "time": "07:57",
+          "price": 729
         }
       ],
       "airline": "Oman Air",
