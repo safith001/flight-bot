@@ -5038,5 +5038,67 @@
       "airline": "flydubai",
       "duration": "4h 55m"
     }
+  },
+  "2026-10-09": {
+    "KL to CMB": {
+      "prices": [
+        {
+          "time": "03:29",
+          "price": 866
+        }
+      ],
+      "airline": "SriLankan",
+      "duration": "3h 30m"
+    },
+    "CMB to KL": {
+      "prices": [
+        {
+          "time": "03:29",
+          "price": 836
+        }
+      ],
+      "airline": "Batik Air",
+      "duration": "3h 50m"
+    },
+    "CMB to Chennai": {
+      "prices": [
+        {
+          "time": "03:29",
+          "price": 623
+        }
+      ],
+      "airline": "SriLankan",
+      "duration": "1h 25m"
+    },
+    "Chennai to CMB": {
+      "prices": [
+        {
+          "time": "03:29",
+          "price": 679
+        }
+      ],
+      "airline": "SriLankan",
+      "duration": "1h 25m"
+    },
+    "CMB to Dubai": {
+      "prices": [
+        {
+          "time": "03:29",
+          "price": 679
+        }
+      ],
+      "airline": "SriLankan",
+      "duration": "4h 40m"
+    },
+    "Dubai to CMB": {
+      "prices": [
+        {
+          "time": "03:29",
+          "price": 1109
+        }
+      ],
+      "airline": "Oman Air",
+      "duration": "6h 25m"
+    }
   }
 }
