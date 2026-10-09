@@ -5049,6 +5049,10 @@
         {
           "time": "07:57",
           "price": 425
+        },
+        {
+          "time": "13:28",
+          "price": 574
         }
       ],
       "airline": "SriLankan",
@@ -5063,6 +5067,10 @@
         {
           "time": "07:57",
           "price": 836
+        },
+        {
+          "time": "13:28",
+          "price": 797
         }
       ],
       "airline": "Batik Air",
@@ -5077,6 +5085,10 @@
         {
           "time": "07:57",
           "price": 623
+        },
+        {
+          "time": "13:28",
+          "price": 625
         }
       ],
       "airline": "SriLankan",
@@ -5091,6 +5103,10 @@
         {
           "time": "07:57",
           "price": 679
+        },
+        {
+          "time": "13:28",
+          "price": 680
         }
       ],
       "airline": "SriLankan",
@@ -5105,6 +5121,10 @@
         {
           "time": "07:57",
           "price": 679
+        },
+        {
+          "time": "13:28",
+          "price": 841
         }
       ],
       "airline": "SriLankan",
@@ -5119,6 +5139,10 @@
         {
           "time": "07:57",
           "price": 729
+        },
+        {
+          "time": "13:28",
+          "price": 728
         }
       ],
       "airline": "Oman Air",
