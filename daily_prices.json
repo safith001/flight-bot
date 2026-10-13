@@ -5739,6 +5739,10 @@
         {
           "time": "00:27",
           "price": 406
+        },
+        {
+          "time": "05:33",
+          "price": 411
         }
       ],
       "airline": "Batik Air",
@@ -5749,6 +5753,10 @@
         {
           "time": "00:27",
           "price": 753
+        },
+        {
+          "time": "05:33",
+          "price": 760
         }
       ],
       "airline": "AirAsia",
@@ -5759,6 +5767,10 @@
         {
           "time": "00:27",
           "price": 625
+        },
+        {
+          "time": "05:33",
+          "price": 623
         }
       ],
       "airline": "SriLankan",
@@ -5769,6 +5781,10 @@
         {
           "time": "00:27",
           "price": 692
+        },
+        {
+          "time": "05:33",
+          "price": 687
         }
       ],
       "airline": "SriLankan",
@@ -5779,6 +5795,10 @@
         {
           "time": "00:27",
           "price": 840
+        },
+        {
+          "time": "05:33",
+          "price": 838
         }
       ],
       "airline": "flydubai",
@@ -5789,6 +5809,10 @@
         {
           "time": "00:27",
           "price": 1143
+        },
+        {
+          "time": "05:33",
+          "price": 1063
         }
       ],
       "airline": "flydubai",
