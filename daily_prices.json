@@ -5933,6 +5933,10 @@
         {
           "time": "13:35",
           "price": 399
+        },
+        {
+          "time": "18:18",
+          "price": 574
         }
       ],
       "airline": "AirAsia",
@@ -5954,6 +5958,10 @@
         },
         {
           "time": "13:35",
+          "price": 752
+        },
+        {
+          "time": "18:18",
           "price": 752
         }
       ],
@@ -5977,6 +5985,10 @@
         {
           "time": "13:35",
           "price": 623
+        },
+        {
+          "time": "18:18",
+          "price": 623
         }
       ],
       "airline": "SriLankan",
@@ -5999,6 +6011,10 @@
         {
           "time": "13:35",
           "price": 769
+        },
+        {
+          "time": "18:18",
+          "price": 903
         }
       ],
       "airline": "Air India",
@@ -6021,6 +6037,10 @@
         {
           "time": "13:35",
           "price": 837
+        },
+        {
+          "time": "18:18",
+          "price": 838
         }
       ],
       "airline": "Emirates",
@@ -6043,6 +6063,10 @@
         {
           "time": "13:35",
           "price": 734
+        },
+        {
+          "time": "18:18",
+          "price": 684
         }
       ],
       "airline": "Jazeera",
