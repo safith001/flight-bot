@@ -6711,5 +6711,67 @@
       "airline": "flydubai",
       "duration": "4h 30m"
     }
+  },
+  "2026-11-11": {
+    "KL to CMB": {
+      "prices": [
+        {
+          "time": "03:21",
+          "price": 478
+        }
+      ],
+      "airline": "AirAsia",
+      "duration": "3h 35m"
+    },
+    "CMB to KL": {
+      "prices": [
+        {
+          "time": "03:21",
+          "price": 820
+        }
+      ],
+      "airline": "AirAsia",
+      "duration": "3h 45m"
+    },
+    "CMB to Chennai": {
+      "prices": [
+        {
+          "time": "03:21",
+          "price": 496
+        }
+      ],
+      "airline": "IndiGo",
+      "duration": "1h 25m"
+    },
+    "Chennai to CMB": {
+      "prices": [
+        {
+          "time": "03:21",
+          "price": 548
+        }
+      ],
+      "airline": "IndiGo",
+      "duration": "1h 15m"
+    },
+    "CMB to Dubai": {
+      "prices": [
+        {
+          "time": "03:21",
+          "price": 793
+        }
+      ],
+      "airline": "flydubai",
+      "duration": "5h 5m"
+    },
+    "Dubai to CMB": {
+      "prices": [
+        {
+          "time": "03:21",
+          "price": 862
+        }
+      ],
+      "airline": "flydubai",
+      "duration": "4h 30m"
+    }
   }
 }
