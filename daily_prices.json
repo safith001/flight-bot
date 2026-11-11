@@ -6726,6 +6726,10 @@
         {
           "time": "14:45",
           "price": 478
+        },
+        {
+          "time": "22:55",
+          "price": 478
         }
       ],
       "airline": "AirAsia",
@@ -6744,6 +6748,10 @@
         {
           "time": "14:45",
           "price": 821
+        },
+        {
+          "time": "22:55",
+          "price": 818
         }
       ],
       "airline": "AirAsia",
@@ -6762,6 +6770,10 @@
         {
           "time": "14:45",
           "price": 496
+        },
+        {
+          "time": "22:55",
+          "price": 494
         }
       ],
       "airline": "IndiGo",
@@ -6780,6 +6792,10 @@
         {
           "time": "14:45",
           "price": 460
+        },
+        {
+          "time": "22:55",
+          "price": 518
         }
       ],
       "airline": "IndiGo",
@@ -6798,6 +6814,10 @@
         {
           "time": "14:45",
           "price": 793
+        },
+        {
+          "time": "22:55",
+          "price": 718
         }
       ],
       "airline": "flydubai",
@@ -6816,6 +6836,10 @@
         {
           "time": "14:45",
           "price": 866
+        },
+        {
+          "time": "22:55",
+          "price": 810
         }
       ],
       "airline": "flydubai",
