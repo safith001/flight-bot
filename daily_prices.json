@@ -7608,6 +7608,10 @@
         {
           "time": "05:05",
           "price": 430
+        },
+        {
+          "time": "10:57",
+          "price": 466
         }
       ],
       "airline": "Batik Air",
@@ -7618,6 +7622,10 @@
         {
           "time": "05:05",
           "price": 805
+        },
+        {
+          "time": "10:57",
+          "price": 1106
         }
       ],
       "airline": "AirAsia",
@@ -7628,6 +7636,10 @@
         {
           "time": "05:05",
           "price": 699
+        },
+        {
+          "time": "10:57",
+          "price": 414
         }
       ],
       "airline": "IndiGo",
@@ -7638,6 +7650,10 @@
         {
           "time": "05:05",
           "price": 464
+        },
+        {
+          "time": "10:57",
+          "price": 394
         }
       ],
       "airline": "IndiGo",
@@ -7648,6 +7664,10 @@
         {
           "time": "05:05",
           "price": 701
+        },
+        {
+          "time": "10:57",
+          "price": 702
         }
       ],
       "airline": "flydubai",
